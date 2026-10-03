@@ -1,116 +1,145 @@
-Insurance Premium Predictor
+# 🏥 Insurance Premium Predictor
 
-A FastAPI practice project built to learn and implement the core concepts of FastAPI while integrating a Machine Learning model with a Streamlit frontend.
+A **FastAPI practice project** built to learn and implement the core concepts of **FastAPI, Pydantic, REST APIs, and ML model serving**, with a **Streamlit frontend** for user interaction.
 
-The project demonstrates how to build a REST API, validate incoming data using Pydantic, create computed fields, handle API requests, serve an ML model, and connect a backend API with a frontend application.
+The project demonstrates how a Machine Learning model can be exposed through a REST API and consumed by a separate frontend application.
 
-🎯 Project Purpose
+---
 
-This project was built primarily as a FastAPI learning and practice project.
+## 🎯 Project Purpose
 
-The main goal is to understand how FastAPI can be used to build a backend API for a Machine Learning application.
+This project was primarily built as a **FastAPI learning and practice project**.
 
-Through this project, the following concepts are practiced:
+The main objective was to understand how FastAPI can be used to build a backend API for a Machine Learning application.
 
-FastAPI application setup
-REST API development
-HTTP methods
-API endpoints and routing
-Pydantic models
-Request validation
-Field() validation
-Annotated
-Literal
-Computed fields
-Path and query parameters
-JSON responses
-Exception handling
-ML model serving
-Frontend-backend communication
-API documentation with Swagger UI
-🏗️ Architecture
-                 ┌──────────────────────┐
-                 │        User          │
-                 └──────────┬───────────┘
-                            │
-                            ▼
-                 ┌──────────────────────┐
-                 │     Streamlit UI     │
-                 │       app.py         │
-                 └──────────┬───────────┘
-                            │
-                       HTTP POST
-                            │
-                            ▼
-                 ┌──────────────────────┐
-                 │       FastAPI        │
-                 │       main.py        │
-                 └──────────┬───────────┘
-                            │
-                            ▼
-                 ┌──────────────────────┐
-                 │   Pydantic Model     │
-                 │   Input Validation   │
-                 └──────────┬───────────┘
-                            │
-                            ▼
-                 ┌──────────────────────┐
-                 │  Feature Engineering │
-                 │                      │
-                 │  BMI                 │
-                 │  Age Group           │
-                 │  Lifestyle Risk      │
-                 │  City Tier           │
-                 └──────────┬───────────┘
-                            │
-                            ▼
-                 ┌──────────────────────┐
-                 │    ML Model          │
-                 │     model.pkl        │
-                 └──────────┬───────────┘
-                            │
-                            ▼
-                 ┌──────────────────────┐
-                 │   JSON Response      │
-                 └──────────────────────┘
-📂 Project Structure
+### Concepts Practiced
+
+* FastAPI application setup
+* REST API development
+* HTTP methods
+* API routing
+* Pydantic models
+* Request validation
+* `Field()` validation
+* `Annotated`
+* `Literal`
+* Computed fields
+* Feature engineering
+* JSON responses
+* Exception handling
+* ML model serving
+* Frontend–backend communication
+* Automatic API documentation
+* Swagger UI
+* ReDoc
+
+---
+
+## 🏗️ Architecture
+
+```text
+                         ┌──────────────────┐
+                         │       User       │
+                         └────────┬─────────┘
+                                  │
+                                  ▼
+                         ┌──────────────────┐
+                         │   Streamlit UI   │
+                         │      app.py      │
+                         └────────┬─────────┘
+                                  │
+                             HTTP POST
+                                  │
+                                  ▼
+                         ┌──────────────────┐
+                         │     FastAPI      │
+                         │      main.py     │
+                         └────────┬─────────┘
+                                  │
+                                  ▼
+                         ┌──────────────────┐
+                         │ Pydantic Model   │
+                         │ Input Validation │
+                         └────────┬─────────┘
+                                  │
+                                  ▼
+                       ┌──────────────────────┐
+                       │ Feature Engineering │
+                       │                      │
+                       │ • BMI                │
+                       │ • Age Group          │
+                       │ • Lifestyle Risk     │
+                       │ • City Tier          │
+                       └──────────┬───────────┘
+                                  │
+                                  ▼
+                         ┌──────────────────┐
+                         │    ML Model      │
+                         │    model.pkl     │
+                         └────────┬─────────┘
+                                  │
+                                  ▼
+                         ┌──────────────────┐
+                         │  JSON Response   │
+                         └──────────────────┘
+```
+
+---
+
+## 📂 Project Structure
+
+```text
 insurance-premium-predictor/
 │
 ├── main.py              # FastAPI backend
 ├── app.py               # Streamlit frontend
 ├── model.pkl            # Serialized ML model
-├── requirements.txt     # Project dependencies
-├── README.md            # Documentation
+├── requirements.txt     # Python dependencies
+├── README.md            # Project documentation
 └── .gitignore           # Git ignore rules
-🚀 FastAPI Concepts Practiced
-1. FastAPI Application
+```
+
+---
+
+# 🚀 FastAPI Concepts Practiced
+
+## 1. FastAPI Application
 
 The project starts by creating a FastAPI application:
 
+```python
 from fastapi import FastAPI
 
 app = FastAPI()
+```
 
-This application acts as the backend server.
+This `app` object acts as the main backend application.
 
-2. API Routes
+---
 
-The project uses FastAPI route decorators to create API endpoints.
+## 2. API Routes
+
+FastAPI route decorators are used to create API endpoints.
 
 Example:
 
+```python
 @app.post("/predict")
 def predict_premium(data: UserInput):
     ...
+```
 
-The /predict endpoint accepts a POST request and returns the predicted insurance premium category.
+The `/predict` endpoint accepts a `POST` request and returns the predicted insurance premium category.
 
-3. Pydantic Data Validation
+---
 
-The project uses Pydantic models to validate incoming API data.
+## 3. Pydantic Models
+
+Pydantic models are used to define and validate incoming request data.
 
 Example:
 
+```python
 class UserInput(BaseModel):
     age: int
     weight: float
@@ -127,38 +156,53 @@ class UserInput(BaseModel):
         "unemployed",
         "private_job"
     ]
+```
 
-This allows FastAPI to automatically validate incoming JSON requests.
+FastAPI automatically uses this model to validate incoming JSON data.
 
-4. Field Validation
+---
 
-Field() is used to define validation rules and metadata.
+## 4. Field Validation
+
+`Field()` is used to define validation rules and additional metadata.
 
 Example:
 
+```python
 age: Annotated[
     int,
     Field(..., gt=0, lt=120)
 ]
+```
 
-This ensures that the age is within the expected range.
+This ensures that the provided age is greater than `0` and less than `120`.
 
-5. Annotated
+---
 
-The project uses Python's Annotated type together with Pydantic's Field().
+## 5. Annotated
 
-Example:
-
-age: Annotated[int, Field(..., gt=0, lt=120)]
-
-This keeps the type information and validation metadata together.
-
-6. Literal
-
-Literal is used to restrict a field to predefined values.
+The project uses Python's `Annotated` type together with Pydantic's `Field()`.
 
 Example:
 
+```python
+age: Annotated[
+    int,
+    Field(..., gt=0, lt=120)
+]
+```
+
+This allows type information and validation rules to be defined together.
+
+---
+
+## 6. Literal
+
+`Literal` restricts a field to a predefined set of values.
+
+Example:
+
+```python
 occupation: Literal[
     "retired",
     "freelancer",
@@ -168,49 +212,71 @@ occupation: Literal[
     "unemployed",
     "private_job"
 ]
+```
 
-Invalid occupation values are automatically rejected by FastAPI.
+If an invalid occupation is provided, FastAPI automatically returns a validation error.
 
-7. Computed Fields
+---
 
-The project uses Pydantic's computed_field to calculate values from the user's input.
+## 7. Computed Fields
 
-BMI
+The project uses Pydantic's `computed_field` to derive additional information from the user's input.
+
+### BMI
+
+```python
 @computed_field
 @property
 def bmi(self) -> float:
     return self.weight / (self.height ** 2)
-Age Group
+```
 
-The user's age is converted into categories such as:
+BMI is calculated from weight and height.
 
-young
-adult
-middle_aged
-senior
-Lifestyle Risk
+### Age Group
 
-Lifestyle risk is calculated using smoking status and BMI:
+The user's age is converted into one of the following groups:
 
-low
-medium
-high
-City Tier
+| Age     | Group       |
+| ------- | ----------- |
+| `< 25`  | Young       |
+| `25–44` | Adult       |
+| `45–59` | Middle-aged |
+| `60+`   | Senior      |
+
+### Lifestyle Risk
+
+Lifestyle risk is derived from smoking status and BMI:
+
+```text
+Low
+Medium
+High
+```
+
+### City Tier
 
 Cities are categorized into:
 
+```text
 Tier 1
 Tier 2
 Tier 3
+```
 
-These concepts demonstrate how backend logic can be integrated into Pydantic models.
+These computed features are then passed to the ML pipeline for prediction.
 
-🔌 API Endpoint
-POST /predict
+---
 
-This endpoint receives user information and returns an insurance premium category.
+# 🔌 API Endpoint
 
-Request
+## `POST /predict`
+
+The main API endpoint receives user information and returns an insurance premium category.
+
+### Request
+
+```json
 {
   "age": 30,
   "weight": 65,
@@ -220,149 +286,216 @@ Request
   "city": "Mumbai",
   "occupation": "private_job"
 }
-Response
+```
+
+### Response
+
+```json
 {
   "predicted_category": "..."
 }
-📖 Interactive API Documentation
+```
 
-One of the major advantages of FastAPI is automatic API documentation.
+---
 
-After starting the server, open:
+# 📖 Interactive API Documentation
 
-Swagger UI
+One of FastAPI's major advantages is its automatic API documentation.
+
+After starting the backend, the following interfaces are available.
+
+### Swagger UI
+
+```text
 http://127.0.0.1:8000/docs
+```
 
-Swagger allows the API to be tested directly from the browser.
+Swagger UI allows API endpoints to be tested directly from the browser.
 
-ReDoc
+### ReDoc
+
+```text
 http://127.0.0.1:8000/redoc
+```
 
-FastAPI automatically generates the API documentation based on the defined routes and Pydantic models.
+FastAPI automatically generates these documentation interfaces from the API routes and Pydantic models.
 
-🖥️ Streamlit Frontend
+---
+
+# 🖥️ Streamlit Frontend
 
 A simple Streamlit frontend is included to interact with the FastAPI backend.
 
 The frontend collects:
 
-Age
-Weight
-Height
-Income
-Smoking status
-City
-Occupation
+* Age
+* Weight
+* Height
+* Annual Income
+* Smoking Status
+* City
+* Occupation
 
-It then sends the information to:
+The collected information is sent to:
 
+```text
 POST /predict
+```
 
-The prediction returned by FastAPI is displayed in the Streamlit interface.
+The prediction returned by FastAPI is then displayed in the Streamlit interface.
 
-🔄 Request Flow
+---
+
+# 🔄 Request Flow
+
+```text
 User
-  │
-  ▼
+ │
+ ▼
 Streamlit Form
-  │
-  ▼
+ │
+ ▼
 HTTP POST Request
-  │
-  ▼
+ │
+ ▼
 FastAPI /predict
-  │
-  ▼
+ │
+ ▼
 Pydantic Validation
-  │
-  ▼
+ │
+ ▼
 Computed Fields
-  │
-  ├── BMI
-  ├── Age Group
-  ├── Lifestyle Risk
-  └── City Tier
-  │
-  ▼
+ │
+ ├── BMI
+ ├── Age Group
+ ├── Lifestyle Risk
+ └── City Tier
+ │
+ ▼
 ML Model
-  │
-  ▼
+ │
+ ▼
 Prediction
-  │
-  ▼
+ │
+ ▼
 JSON Response
-  │
-  ▼
+ │
+ ▼
 Streamlit UI
-🛠️ Tech Stack
-Backend
-Python
-FastAPI
-Pydantic
-Uvicorn
-Machine Learning
-Scikit-learn
-Pandas
-NumPy
-Pickle
-Frontend
-Streamlit
-Requests
-Development Tools
-Git
-GitHub
-Python Virtual Environment
-⚙️ Installation
+```
 
-Clone the repository:
+---
 
+# 🛠️ Tech Stack
+
+| Category        | Technologies  |
+| --------------- | ------------- |
+| Language        | Python        |
+| Backend         | FastAPI       |
+| Validation      | Pydantic      |
+| Server          | Uvicorn       |
+| ML              | Scikit-learn  |
+| Data Processing | Pandas, NumPy |
+| Frontend        | Streamlit     |
+| HTTP Client     | Requests      |
+| Serialization   | Pickle        |
+| Version Control | Git, GitHub   |
+
+---
+
+# ⚙️ Installation
+
+## 1. Clone the Repository
+
+```bash
 git clone https://github.com/safayet9009/insurance-premium-predictor.git
 cd insurance-premium-predictor
+```
 
-Create a virtual environment:
+## 2. Create a Virtual Environment
 
+```bash
 python3 -m venv venv
+```
 
-Activate it:
+## 3. Activate the Virtual Environment
 
+### Linux / macOS
+
+```bash
 source venv/bin/activate
+```
 
-Install dependencies:
+### Windows
 
+```bash
+venv\Scripts\activate
+```
+
+## 4. Install Dependencies
+
+```bash
 pip install -r requirements.txt
-▶️ Run the FastAPI Backend
+```
 
-Start the FastAPI development server:
+---
 
+# ▶️ Running the Application
+
+The application consists of two components:
+
+1. FastAPI backend
+2. Streamlit frontend
+
+Both need to be running simultaneously.
+
+---
+
+## Start FastAPI Backend
+
+```bash
 fastapi dev main.py
+```
 
-The API will run at:
+The API will be available at:
 
+```text
 http://127.0.0.1:8000
-▶️ Run the Streamlit Frontend
+```
+
+---
+
+## Start Streamlit Frontend
 
 Open another terminal:
 
+```bash
 cd insurance-premium-predictor
 source venv/bin/activate
 streamlit run app.py
+```
 
-The frontend will run at:
+The Streamlit application will be available at:
 
+```text
 http://localhost:8501
-🧪 Testing the API
+```
+
+---
+
+# 🧪 Testing the API
 
 The API can be tested using:
 
-Swagger UI
-ReDoc
-Browser
-cURL
-Postman
-Streamlit frontend
+* Swagger UI
+* ReDoc
+* cURL
+* Postman
+* Streamlit frontend
 
-Example using cURL:
+### cURL Example
 
+```bash
 curl -X POST http://127.0.0.1:8000/predict \
 -H "Content-Type: application/json" \
 -d '{
@@ -374,10 +507,15 @@ curl -X POST http://127.0.0.1:8000/predict \
   "city": "Mumbai",
   "occupation": "private_job"
 }'
-📚 What I Learned
+```
 
-This project helped me practice the following FastAPI concepts:
+---
 
+# 📚 What I Learned
+
+This project provided hands-on practice with the following FastAPI concepts:
+
+```text
 FastAPI Application
         ↓
 Routing
@@ -405,29 +543,41 @@ ML Model Serving
 Frontend ↔ Backend Communication
         ↓
 Automatic API Documentation
+```
 
-The project also provided hands-on experience with connecting a Machine Learning model to a production-style API structure.
+The project also helped me understand how a Machine Learning model can be integrated into a backend API and consumed by a separate frontend application.
 
-🔮 Possible Future Improvements
-Add proper exception handling
-Add API authentication
-Add database integration
-Add automated testing with Pytest
-Add logging
-Add Docker support
-Add environment variables
-Add API versioning
-Add model confidence and probabilities
-Deploy the FastAPI backend
-Add CI/CD pipeline
-👨‍💻 Author
+---
 
-Safayet Hossain
+# 🔮 Future Improvements
+
+Possible improvements include:
+
+* [ ] Add more API endpoints
+* [ ] Improve exception handling
+* [ ] Add automated tests with Pytest
+* [ ] Add API authentication
+* [ ] Add database integration
+* [ ] Add structured logging
+* [ ] Add environment variables
+* [ ] Add Docker support
+* [ ] Add API versioning
+* [ ] Add model confidence and class probabilities
+* [ ] Deploy the FastAPI backend
+* [ ] Add CI/CD pipeline
+
+---
+
+# 👨‍💻 Author
+
+**Safayet Hossain**
 
 Computer Science & Engineering Student
 
-GitHub: https://github.com/safayet9009
+GitHub: [@safayet9009](https://github.com/safayet9009)
 
-📄 License
+---
 
-This project is created for learning and educational purposes.
+## 📄 License
+
+This project was created for **learning and educational purposes**.
